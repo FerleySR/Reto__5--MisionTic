@@ -3,6 +3,7 @@ public class Producto {
     private String id;
     private double temperatura;
     private double valorBase;
+    private double costoAlmacenamiento;
 
     public Producto(){
         this.nombre="";
@@ -45,10 +46,22 @@ public class Producto {
         return this.valorBase;
     }
 
+    public double getCostoAlmacenamiento() {
+        return this.costoAlmacenamiento;
+    }
+
     public void setValorBase(double valorBase) {
         this.valorBase = valorBase;
     }
     public String toString() {
         return this.getClass().getName() + "{" + "nombre=" + nombre + ", id=" + id + ", temperatura=" + temperatura + ", valorBase=" + valorBase + '}';
+    }
+    public void calcularCostoDeAlmacenamiento(double temperatura){
+        if (temperatura>-1){
+            this.costoAlmacenamiento*=1.10;
+        }
+        else{
+            this.costoAlmacenamiento*=1.20;
+        }
     }
 }
