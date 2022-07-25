@@ -1,17 +1,23 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class Interfaz extends JFrame {
-    private Almacen almacen=new Almacen();
-    public JTextField txtId,txtNombre,txtTemperatura,txtValorBase;
-    public JButton buttonGuardar,buttonEliminar,buttonActualizar,buttonCancelar;
+    private Almacen almacen;
+    public JTextField txtId,txtNombre,txtTemperatura,txtValorBase,txtFiltro;
+    public JButton buttonGuardar,buttonEliminar,buttonActualizar,buttonCancelar,buttonFiltrar,buttonCancelarFiltrado;
+
+    public DefaultTableModel dtm;
     private int font;
     public Interfaz(){
         this.font=16;
+        this.almacen=new Almacen();
+        //Pantalla Principal
         setBounds(100,50,1235,620);
         setTitle("Farmacia");
         setLayout(null);
 
+        //Paneles Agregados a la pantalla Principal
         JPanel panelDeFormulario=new JPanel();
         panelDeFormulario.setBounds(5,5,420,570);
         panelDeFormulario.setBorder(BorderFactory.createEtchedBorder());
@@ -24,6 +30,7 @@ public class Interfaz extends JFrame {
         panelTablas.setLayout(null);
         getContentPane().add(panelTablas);
 
+        //Panel Formularios
         JLabel id = new JLabel("Id: ");
         id.setBounds(15,15,140,40);
         Font auxId=id.getFont();
@@ -79,6 +86,37 @@ public class Interfaz extends JFrame {
         this.buttonCancelar=new JButton("Cancelar");
         this.buttonCancelar.setBounds(100,390,200,40);
         panelDeFormulario.add(this.buttonCancelar);
+
+        //Panel Tabla
+        //Formulario Tabla
+        this.txtFiltro=new JTextField();
+        this.txtFiltro.setBounds(50,515,400,40);
+        panelTablas.add(txtFiltro);
+
+        this.buttonFiltrar=new JButton("Buscar");
+        this.buttonFiltrar.setBounds(470,515,120,40);
+        panelTablas.add(this.buttonFiltrar);
+
+        this.buttonCancelarFiltrado=new JButton("Cancelar");
+        this.buttonCancelarFiltrado.setBounds(610,515,120,40);
+        panelTablas.add(this.buttonCancelarFiltrado);
+
+        //Tabla de la seccion Panel Tabla
+        Object[][] datos = null;
+        String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
+        dtm= new DefaultTableModel(datos, columnas);
+
+        JTable tablaFarmacia = new JTable(dtm);
+        tablaFarmacia.setPreferredScrollableViewportSize(new Dimension(700, 490));//dimension de la tabla
+        tablaFarmacia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//seleccion de las filas
+        tablaFarmacia.setFillsViewportHeight(true);//vacio o lleno
+        JScrollPane scroll = new JScrollPane(tablaFarmacia);
+
+        JPanel contenidoTabla = new JPanel();//panel que envuelvetodo
+        contenidoTabla.setBounds(40, 10, 705, 495);
+        contenidoTabla.setLayout(new GridLayout(1,0));
+        contenidoTabla.add(scroll);
+        panelTablas.add(contenidoTabla);
 
         setVisible(true);
     }
