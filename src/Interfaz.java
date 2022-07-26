@@ -1,6 +1,10 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.util.List;
 
 public class Interfaz extends JFrame {
     private Almacen almacen;
@@ -25,7 +29,7 @@ public class Interfaz extends JFrame {
         getContentPane().add(panelDeFormulario);
 
         JPanel panelTablas=new JPanel();
-        panelTablas.setBounds(415,5,780,570);
+        panelTablas.setBounds(435,5,780,570);
         panelTablas.setBorder(BorderFactory.createEtchedBorder());
         panelTablas.setLayout(null);
         getContentPane().add(panelTablas);
@@ -118,16 +122,33 @@ public class Interfaz extends JFrame {
         contenidoTabla.add(scroll);
         panelTablas.add(contenidoTabla);
 
+        listenerGuardar();
+
         setVisible(true);
     }
-    public void menu(){
-
+    public void listenerGuardar(){
+        buttonGuardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guardarProducto();
+            }
+        });
     }
-    public void presentarProducto(){
+    public void presentarProducto(ResultSet rs){
+        try {
+            while (rs.next()){
 
+            }
+        }
+        catch (Exception e){
+
+        }
     }
     public void guardarProducto(){
-
+        Producto p;
+        p=new Producto(this.txtId.getText(),this.txtNombre.getText(),Double.parseDouble(this.txtTemperatura.getText()),Double.parseDouble(this.txtValorBase.getText()));
+        this.almacen.agregarProducto(p);
+        p.calcularCostoDeAlmacenamiento();
     }
     public void actualizarProducto(){
 

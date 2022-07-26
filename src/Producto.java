@@ -56,12 +56,12 @@ public class Producto {
     public String toString() {
         return this.getClass().getName() + "{" + "nombre=" + nombre + ", id=" + id + ", temperatura=" + temperatura + ", valorBase=" + valorBase + '}';
     }
-    public void calcularCostoDeAlmacenamiento(double temperatura){
-        if (temperatura>-1){
-            this.costoAlmacenamiento*=1.10;
+    public void calcularCostoDeAlmacenamiento(){
+        if (this.temperatura > -1){
+            this.costoAlmacenamiento=valorBase*1.10;
         }
         else{
-            this.costoAlmacenamiento*=1.20;
+            this.costoAlmacenamiento= valorBase*1.20;
         }
     }
 }
