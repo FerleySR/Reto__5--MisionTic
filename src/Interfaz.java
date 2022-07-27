@@ -197,29 +197,12 @@ public class Interfaz extends JFrame {
         limpiarFormulario();
     }
 
-
-    public void bloquearFormulario()
-    {
-        txtNombre.setEditable(false);
-        txtId.setEditable(false);
-        txtValorBase.setEditable(false);
-        txtTemperatura.setEditable(false);
-    }
-    
-    public void desbloquearFormulario()
-    {
-        txtNombre.setEditable(true);
-        txtId.setEditable(true);
-        txtValorBase.setEditable(true);
-        txtTemperatura.setEditable(true);
-    }
     public void limpiarFormulario()
     {
         this.txtId.setText("");
         this.txtNombre.setText("");
         this.txtTemperatura.setText("");
         this.txtValorBase.setText("");
-        desbloquearFormulario();
     }
     public void cargarProductoEnFormulario(String codigo) {
         Almacen almacen = new Almacen();
@@ -242,5 +225,5 @@ public class Interfaz extends JFrame {
         presentarProducto();
         limpiarFormulario();
     }
-
+    
 }
