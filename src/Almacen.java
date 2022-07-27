@@ -48,12 +48,12 @@ public class Almacen {
      * @param criterio
      * @return
      */
-    public List<Producto> consultar(String criterio)
+    public Producto consultar(String criterio)
     {
-        listaProductos= new ArrayList<Producto>();
         Connect bd=new Connect();
         bd.connect();
-        ResultSet rs = bd.consultar("SELECT Id Nombre FROM farmacia WHERE Id  LIKE \"%"+criterio+"%\""+ "OR marca Nombre \"%"+criterio+"%\"");
+        ResultSet rs = bd.consultar("SELECT * FROM farmacia "
+                                    +"WHERE Id=\""+criterio+"\"");
         try
         {
             while(rs.next())
@@ -62,23 +62,21 @@ public class Almacen {
                 String nombre = rs.getString(2);
                 Double temperatura=rs.getDouble(3);
                 Double valorBase=rs.getDouble(4);
-                Double costo=rs.getDouble(5);
-                Producto busqueda;
-                busqueda=new Producto(nombre, id, temperatura,valorBase, costo);
-                this.listaProductos.add(busqueda);
+                bd.closeConnect();
+                return new Producto(nombre, id, temperatura,valorBase);
             }
         }
         catch(Exception e)
         {
+            bd.closeConnect();
             return null;
         }
-        bd.closeConnect();
-        return listaProductos;
+        return null;
     }
     public void eliminarProducto(String id){
 
     }
     public void actualizarProducto(String id){
-
+        
     }
 }

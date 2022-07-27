@@ -46,8 +46,8 @@ public class Connect {
     public void insert(String id, String nombre, double temperatura,double valorBase, double costo){
         String sql="INSERT INTO Farmacia(Id, Nombre, Temperatura, ValorBase,Costo) VALUES(?,?,?,?,?)";
         try (PreparedStatement prsql=conn.prepareStatement(sql)){
-                prsql.setString(1, id);
-                prsql.setString(2, nombre);
+                prsql.setString(2, id);
+                prsql.setString(1, nombre);
                 prsql.setDouble(3, temperatura);
                 prsql.setDouble(4, valorBase);
                 prsql.setDouble(5, costo);
@@ -64,7 +64,8 @@ public class Connect {
         {
             ejecutor = conn.createStatement();
             System.out.println("Consult");
-            return ejecutor.executeQuery(sql);
+            ResultSet rs=ejecutor.executeQuery(sql);
+            return  rs;
         }
         catch (Exception e)
         {
@@ -94,4 +95,5 @@ public class Connect {
         {
         }
     }
+    
 }

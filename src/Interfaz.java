@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +13,7 @@ public class Interfaz extends JFrame {
     private Almacen almacen;
     public JTextField txtId,txtNombre,txtTemperatura,txtValorBase,txtFiltro;
     public JButton buttonGuardar,buttonEliminar,buttonActualizar,buttonCancelar,buttonFiltrar,buttonCancelarFiltrado;
-
+    public JTable tablaFarmacia;
     public DefaultTableModel dtm;
     private int font;
     public Interfaz(){
@@ -93,73 +95,76 @@ public class Interfaz extends JFrame {
         panelDeFormulario.add(this.buttonCancelar);
 
         //Panel Tabla
-        //Formulario Tabla
-        this.txtFiltro=new JTextField();
-        this.txtFiltro.setBounds(50,515,400,40);
-        panelTablas.add(txtFiltro);
-
-        this.buttonFiltrar=new JButton("Buscar");
-        this.buttonFiltrar.setBounds(470,515,120,40);
-        panelTablas.add(this.buttonFiltrar);
-
-        this.buttonCancelarFiltrado=new JButton("Cancelar");
-        this.buttonCancelarFiltrado.setBounds(610,515,120,40);
-        panelTablas.add(this.buttonCancelarFiltrado);
 
         //Tabla de la seccion Panel Tabla
         Object[][] datos = null;
         String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
         dtm= new DefaultTableModel(datos, columnas);
 
-        JTable tablaFarmacia = new JTable(dtm);
-        tablaFarmacia.setPreferredScrollableViewportSize(new Dimension(700, 490));//dimension de la tabla
-        tablaFarmacia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//seleccion de las filas
-        tablaFarmacia.setFillsViewportHeight(true);//vacio o lleno
+        this.tablaFarmacia = new JTable(dtm);
+        this.tablaFarmacia.setPreferredScrollableViewportSize(new Dimension(700, 590));//dimension de la tabla
+        this.tablaFarmacia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//seleccion de las filas
+        this.tablaFarmacia.setFillsViewportHeight(true);//vacio o lleno
         JScrollPane scroll = new JScrollPane(tablaFarmacia);
 
         JPanel contenidoTabla = new JPanel();//panel que envuelvetodo
-        contenidoTabla.setBounds(40, 10, 705, 495);
+        contenidoTabla.setBounds(40, 10, 705, 600);
         contenidoTabla.setLayout(new GridLayout(1,0));
         contenidoTabla.add(scroll);
         panelTablas.add(contenidoTabla);
 
         listenerGuardar();
-        listenerFiltrar();
+        listenerCancelar();
         presentarProducto();
-        listenerCancelarFiltrado();
+        listenerTabla();
         setVisible(true);
     }
     public void listenerGuardar(){
-        buttonGuardar.addActionListener(new ActionListener() {
+        this.buttonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarProducto();
             }
         });
     }
-    public void listenerCancelarFiltrado(){
-        buttonCancelarFiltrado.addActionListener(new ActionListener() {
+    public void listenerActualizar(){
+        this.buttonActualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                presentarProducto();
+                guardarProducto();
             }
         });
     }
-    public void listenerFiltrar(){
-        buttonFiltrar.addActionListener(new ActionListener() {
+    public void listenerCancelar(){
+        this.buttonCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                filtrarProducto();
+                limpiarFormulario();
             }
         });
     }
+    public void listenerTabla(){
+        tablaFarmacia.getSelectionModel().addListSelectionListener(new ListSelectionListener() 
+        {
+            public void valueChanged(ListSelectionEvent e) 
+            {
+                if (tablaFarmacia.getSelectedRowCount() > 0)
+                {
+                    int row = tablaFarmacia.getSelectedRow();
+                    String codigo = dtm.getValueAt(row, 0).toString();
+                    cargarProductoEnFormulario(codigo);
+                }
+            }
+
+        });
+    }
+    
     public void presentarProducto(){
         dtm.setRowCount(0);
         Almacen almacen = new Almacen();
         List<Producto> productos = almacen.getProductos();
         for (Producto p : productos)
         {
-            String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
             Object[] row = {p.getId(), p.getNombre(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
             dtm.addRow(row);
         }
@@ -169,7 +174,7 @@ public class Interfaz extends JFrame {
         for (Producto p : productos)
         {
             String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
-            Object[] row = {p.getId(), p.getNombre(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
+            Object[] row = {p.getNombre(), p.getId(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
             dtm.addRow(row);
         }
     }
@@ -179,16 +184,40 @@ public class Interfaz extends JFrame {
         this.almacen.agregarProducto(p);
         presentarProducto();
     }
-    public void buttonFiltrarListener(){
-        buttonFiltrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                filtrarProducto();
-            }
-        });
+
+
+    public void bloquearFormulario()
+    {
+        txtNombre.setEditable(false);
+        txtId.setEditable(false);
+        txtValorBase.setEditable(false);
+        txtTemperatura.setEditable(false);
     }
-    public void filtrarProducto(){
-        mostrarProducto(almacen.consultar(txtFiltro.getText()));
+    
+    public void desbloquearFormulario()
+    {
+        txtNombre.setEditable(true);
+        txtId.setEditable(true);
+        txtValorBase.setEditable(true);
+        txtTemperatura.setEditable(true);
+    }
+    public void limpiarFormulario()
+    {
+        this.txtId.setText("");
+        this.txtNombre.setText("");
+        this.txtTemperatura.setText("");
+        this.txtValorBase.setText("");
+        desbloquearFormulario();
+    }
+    private void cargarProductoEnFormulario(String codigo) {
+        Almacen almacen = new Almacen();
+        Producto p;
+        p=almacen.consultar(codigo);
+        txtId.setText(p.getId());
+        txtNombre.setText(p.getNombre());
+        txtTemperatura.setText(p.getTemperatura()+"");
+        txtValorBase.setText(p.getValorBase()+"");
+        bloquearFormulario();
     }
 
 }
