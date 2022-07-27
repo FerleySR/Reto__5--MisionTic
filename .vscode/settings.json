@@ -1,0 +1,12 @@
+{
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "c:\\Users\\gehin\\Documents\\SQLite\\JDBC\\sqlite-jdbc-3.8.11.1.jar",
+            "sqlite/java/connect/sqlite-jdbc-3.27.2.1.jar"
+        ],
+        "exclude": [
+            "c:\\Users\\gehin\\Documents\\SQLite\\JDBC\\sqlite-jdbc-3.36.0.3.jar"
+        ]
+    }
+}

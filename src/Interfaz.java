@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Interfaz extends JFrame {
@@ -134,21 +135,21 @@ public class Interfaz extends JFrame {
             }
         });
     }
-    public void presentarProducto(ResultSet rs){
-        try {
-            while (rs.next()){
-
-            }
+    /*public void presentarProducto(){
+        dtm.setRowCount(0);
+        Almacen almacen = new Almacen();
+        ArrayList<Producto> lista = (ArrayList<Producto>) almacen.getProductos();
+        for (Producto p : lista)
+        {
+            String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
+            Object[] row = {p.getId(), p.getNombre(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
+            dtm.addRow(row);
         }
-        catch (Exception e){
-
-        }
-    }
+    }*/
     public void guardarProducto(){
         Producto p;
         p=new Producto(this.txtId.getText(),this.txtNombre.getText(),Double.parseDouble(this.txtTemperatura.getText()),Double.parseDouble(this.txtValorBase.getText()));
         this.almacen.agregarProducto(p);
-        p.calcularCostoDeAlmacenamiento();
     }
     public void actualizarProducto(){
 

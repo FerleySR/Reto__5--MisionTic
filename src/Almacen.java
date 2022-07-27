@@ -1,24 +1,27 @@
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Almacen {
 
-    public ResultSet getProductos() {
-        BaseDatos bd=new BaseDatos();
-        bd.crearConexion();
+    /*public ResultSet getProductos() {
+        Connect bd=new Connect();
+        bd.connect();
         ResultSet rs = bd.consultar("SELECT Id, Nombre, Temperatura, ValorBase, Costo"+
                 "FROM Farmacia");
         return rs;
-    }
+    }*/
+    /**
+     * @param producto
+     */
     public void agregarProducto(Producto producto){
-        BaseDatos dates=new BaseDatos();
+        Connect dates=new Connect();
         producto.calcularCostoDeAlmacenamiento();
-        String sql = "INSERT INTO datosFarmacia(Id, Nombre, Temperatura, ValorBase, Costo) "+
+        String sql = "INSERT INTO Farmacia(Id, Nombre, Temperatura, ValorBase, Costo) "+
                 "VALUES (\""+producto.getId()+"\", \""+producto.getNombre()+"\", "+producto.getTemperatura()+", "+producto.getValorBase()+", "+producto.getCostoAlmacenamiento()+")";
-        System.out.println(dates.crearConexion());
-        dates.insertar(sql);
-        dates.cerrarConexion();
+        dates.connect();
+        dates.insert(sql);
+        dates.connect();
+
     }
 
     public List<Producto> buscarProductos(String valorBusqueda){

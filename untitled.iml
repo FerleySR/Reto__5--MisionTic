@@ -9,4 +9,11 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sqlite-jdbc-3.36.0.3" level="project" />
   </component>
+  <dependencies>
+    <dependency>
+	    <groupId>org.xerial</groupId>
+	    <artifactId>sqlite-jdbc</artifactId>
+	    <version>3.8.11.1</version>
+    </dependency>
+  <dependencies/>
 </module>
