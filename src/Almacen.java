@@ -86,4 +86,29 @@ public class Almacen {
         dates.actualizar(producto.getId(),producto.getNombre(), producto.getTemperatura(), producto.getValorBase(), producto.getCostoAlmacenamiento());
         dates.closeConnect();
     }
+    public List<Producto> busqueda(String criterio){
+        listaProductos.clear();
+        Connect dates=new Connect();
+        dates.connect();
+        ResultSet rs=dates.busqueda(criterio);
+        try
+        {
+            while(rs.next())
+            {
+                String id = rs.getString(1);
+                String nombre = rs.getString(2);
+                Double temperatura=rs.getDouble(3);
+                Double valorBase=rs.getDouble(4);
+                Double costo=rs.getDouble(5);
+                Producto p= new Producto(nombre, id, temperatura,valorBase,costo);
+                listaProductos.add(p);
+            }
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+        dates.closeConnect();
+        return listaProductos;
+    }
 }

@@ -105,5 +105,20 @@ public class Connect {
             System.out.println(e.getMessage());
         }
     }
-    
+    public ResultSet busqueda(String sql)
+    {
+        String buscar="SELECT * FROM farmacia WHERE Id LIKE \"%"+sql+"%\""+"OR nombre LIKE \"%"+sql+"%\" "; 
+        try
+        {
+            ejecutor = conn.createStatement();
+            System.out.println("Consultas");
+            ResultSet rs=ejecutor.executeQuery(buscar);
+            return  rs;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

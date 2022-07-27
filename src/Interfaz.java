@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Interfaz extends JFrame {
     private Almacen almacen;
-    public JTextField txtId,txtNombre,txtTemperatura,txtValorBase,txtFiltro;
-    public JButton buttonGuardar,buttonEliminar,buttonActualizar,buttonCancelar,buttonFiltrar,buttonCancelarFiltrado;
+    public JTextField txtValorBusqueda,txtId,txtNombre,txtTemperatura,txtValorBase,txtFiltro;
+    public JButton buttonBuscar,buttonGuardar,buttonEliminar,buttonActualizar,buttonCancelar;
     public JTable tablaFarmacia;
     public DefaultTableModel dtm;
     private int font;
@@ -94,6 +94,14 @@ public class Interfaz extends JFrame {
         this.buttonCancelar.setBounds(100,390,200,40);
         panelDeFormulario.add(this.buttonCancelar);
 
+        this.txtValorBusqueda=new JTextField();
+        this.txtValorBusqueda.setBounds(15,440,190,40);
+        panelDeFormulario.add(this.txtValorBusqueda);
+
+        this.buttonBuscar=new JButton("Buscar");
+        this.buttonBuscar.setBounds(215,440,190,40);
+        panelDeFormulario.add(this.buttonBuscar);
+
         //Panel Tabla
 
         //Tabla de la seccion Panel Tabla
@@ -118,6 +126,7 @@ public class Interfaz extends JFrame {
         presentarProducto();
         listenerTabla();
         listenerActualizar();
+        listenerBuscar();
         listenerEliminar();
         setVisible(true);
     }
@@ -153,7 +162,19 @@ public class Interfaz extends JFrame {
             }
         });
     }
+    public void listenerBuscar(){
+        this.buttonBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarProducto();
+            }
+        });
+    }
     
+    public void buscarProducto() {
+        mostrarProducto(almacen.busqueda(this.txtValorBusqueda.getText()));
+        limpiarFormulario();
+    }
     public void listenerTabla(){
         tablaFarmacia.getSelectionModel().addListSelectionListener(new ListSelectionListener() 
         {
@@ -184,8 +205,7 @@ public class Interfaz extends JFrame {
         dtm.setRowCount(0);
         for (Producto p : productos)
         {
-            String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
-            Object[] row = {p.getNombre(), p.getId(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
+            Object[] row = {p.getId(), p.getNombre(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
             dtm.addRow(row);
         }
     }
