@@ -124,7 +124,9 @@ public class Interfaz extends JFrame {
         panelTablas.add(contenidoTabla);
 
         listenerGuardar();
-
+        listenerFiltrar();
+        presentarProducto();
+        listenerCancelarFiltrado();
         setVisible(true);
     }
     public void listenerGuardar(){
@@ -135,29 +137,58 @@ public class Interfaz extends JFrame {
             }
         });
     }
-    /*public void presentarProducto(){
+    public void listenerCancelarFiltrado(){
+        buttonCancelarFiltrado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                presentarProducto();
+            }
+        });
+    }
+    public void listenerFiltrar(){
+        buttonFiltrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filtrarProducto();
+            }
+        });
+    }
+    public void presentarProducto(){
         dtm.setRowCount(0);
         Almacen almacen = new Almacen();
-        ArrayList<Producto> lista = (ArrayList<Producto>) almacen.getProductos();
-        for (Producto p : lista)
+        List<Producto> productos = almacen.getProductos();
+        for (Producto p : productos)
         {
             String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
             Object[] row = {p.getId(), p.getNombre(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
             dtm.addRow(row);
         }
-    }*/
+    }
+    public void mostrarProducto(List<Producto> productos){
+        dtm.setRowCount(0);
+        for (Producto p : productos)
+        {
+            String[] columnas = {"Id", "Nombre", "Temperatura", "Valor Base", "Costo Almacenamiento"};
+            Object[] row = {p.getId(), p.getNombre(), p.getTemperatura(), p.getValorBase(), p.getCostoAlmacenamiento()};
+            dtm.addRow(row);
+        }
+    }
     public void guardarProducto(){
         Producto p;
         p=new Producto(this.txtId.getText(),this.txtNombre.getText(),Double.parseDouble(this.txtTemperatura.getText()),Double.parseDouble(this.txtValorBase.getText()));
         this.almacen.agregarProducto(p);
+        presentarProducto();
     }
-    public void actualizarProducto(){
+    public void buttonFiltrarListener(){
+        buttonFiltrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filtrarProducto();
+            }
+        });
+    }
+    public void filtrarProducto(){
+        mostrarProducto(almacen.consultar(txtFiltro.getText()));
+    }
 
-    }
-    public void buscarProducto(){
-
-    }
-    public void eliminarProducto(){
-
-    }
 }

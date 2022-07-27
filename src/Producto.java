@@ -10,12 +10,20 @@ public class Producto {
         this.id="";
         this.temperatura=0;
         this.valorBase=0;
+        this.costoAlmacenamiento=0;
     }
     public Producto(String nombre,String id,double temperatura,double valorBase){
         this.nombre=nombre;
         this.id=id;
         this.temperatura=temperatura;
         this.valorBase=valorBase;
+    }
+    public Producto(String nombre,String id,double temperatura,double valorBase, double costo){
+        this.nombre=nombre;
+        this.id=id;
+        this.temperatura=temperatura;
+        this.valorBase=valorBase;
+        this.costoAlmacenamiento=costo;
     }
 
     public String getNombre() {
@@ -47,6 +55,7 @@ public class Producto {
     }
 
     public double getCostoAlmacenamiento() {
+        calcularCostoDeAlmacenamiento();
         return this.costoAlmacenamiento;
     }
 
