@@ -17,6 +17,7 @@ public class Producto {
         this.id=id;
         this.temperatura=temperatura;
         this.valorBase=valorBase;
+        calcularCostoDeAlmacenamiento();
     }
     public Producto(String nombre,String id,double temperatura,double valorBase, double costo){
         this.nombre=nombre;

@@ -117,6 +117,8 @@ public class Interfaz extends JFrame {
         listenerCancelar();
         presentarProducto();
         listenerTabla();
+        listenerActualizar();
+        listenerEliminar();
         setVisible(true);
     }
     public void listenerGuardar(){
@@ -131,7 +133,7 @@ public class Interfaz extends JFrame {
         this.buttonActualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                guardarProducto();
+                actualizarTabla();
             }
         });
     }
@@ -143,6 +145,15 @@ public class Interfaz extends JFrame {
             }
         });
     }
+    public void listenerEliminar(){
+        this.buttonEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarProducto();
+            }
+        });
+    }
+    
     public void listenerTabla(){
         tablaFarmacia.getSelectionModel().addListSelectionListener(new ListSelectionListener() 
         {
@@ -183,6 +194,7 @@ public class Interfaz extends JFrame {
         p=new Producto(this.txtId.getText(),this.txtNombre.getText(),Double.parseDouble(this.txtTemperatura.getText()),Double.parseDouble(this.txtValorBase.getText()));
         this.almacen.agregarProducto(p);
         presentarProducto();
+        limpiarFormulario();
     }
 
 
@@ -209,7 +221,7 @@ public class Interfaz extends JFrame {
         this.txtValorBase.setText("");
         desbloquearFormulario();
     }
-    private void cargarProductoEnFormulario(String codigo) {
+    public void cargarProductoEnFormulario(String codigo) {
         Almacen almacen = new Almacen();
         Producto p;
         p=almacen.consultar(codigo);
@@ -217,7 +229,18 @@ public class Interfaz extends JFrame {
         txtNombre.setText(p.getNombre());
         txtTemperatura.setText(p.getTemperatura()+"");
         txtValorBase.setText(p.getValorBase()+"");
-        bloquearFormulario();
+    }
+    public void actualizarTabla(){
+        Producto p;
+        p=new Producto(txtNombre.getText(),txtId.getText(),Double.parseDouble(txtTemperatura.getText()),Double.parseDouble(txtValorBase.getText()));
+        this.almacen.actualizarProducto(p);
+        presentarProducto();
+        limpiarFormulario();
+    }
+    public void eliminarProducto(){
+        this.almacen.eliminarProducto(this.txtId.getText());
+        presentarProducto();
+        limpiarFormulario();
     }
 
 }

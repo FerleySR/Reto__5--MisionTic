@@ -42,6 +42,7 @@ public class Almacen {
         Connect dates=new Connect();
         dates.connect();
         dates.insert(producto.getId(),producto.getNombre(), producto.getTemperatura(), producto.getValorBase(), producto.getCostoAlmacenamiento());
+        dates.closeConnect();
     }
 
     /**
@@ -74,9 +75,15 @@ public class Almacen {
         return null;
     }
     public void eliminarProducto(String id){
-
+        Connect dates=new Connect();
+        dates.connect();
+        dates.delete(id);
+        dates.closeConnect();
     }
-    public void actualizarProducto(String id){
-        
+    public void actualizarProducto(Producto producto){
+        Connect dates=new Connect();
+        dates.connect();
+        dates.actualizar(producto.getId(),producto.getNombre(), producto.getTemperatura(), producto.getValorBase(), producto.getCostoAlmacenamiento());
+        dates.closeConnect();
     }
 }

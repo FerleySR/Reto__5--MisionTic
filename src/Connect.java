@@ -69,30 +69,40 @@ public class Connect {
         }
         catch (Exception e)
         {
+            System.out.println(e.getMessage());
             return null;
         }
     }
-    public void actualizar(String sql)
+    public void actualizar(String id, String nombre, double temperatura,double valorBase, double costo)
     {
-        try
+        String sql="UPDATE farmacia SET Nombre=?,Temperatura=?,ValorBase=?,Costo=? WHERE Id=?";
+        try(PreparedStatement prsql=conn.prepareStatement(sql))
         {
-            ejecutor = conn.createStatement();
-            ejecutor.executeUpdate(sql);
+            prsql.setString(1, nombre);
+            prsql.setDouble(2, temperatura);
+            prsql.setDouble(3, valorBase);
+            prsql.setDouble(4, costo);
+            prsql.setString(5,id);
+            prsql.executeUpdate();
+            System.out.println("Update");
         }
         catch (Exception e)
         {
-
+            System.out.println(e.getMessage());
         }
     }
-    public void borrar(String sql)
+    public void delete(String sql)
     {
-        try
+        String delet="DELETE FROM farmacia WHERE Id=?";
+        try(PreparedStatement prsql=conn.prepareStatement(delet))
         {
-            ejecutor = conn.createStatement();
-            ejecutor.executeUpdate(sql);
+            prsql.setString(1, sql);
+            prsql.executeUpdate();
+            System.out.println("Delete");
         }
         catch (Exception e)
         {
+            System.out.println(e.getMessage());
         }
     }
     
